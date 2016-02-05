@@ -613,6 +613,12 @@ def boot_report(config):
                 cmd = 'cat %s | sendmail -t' % os.path.join(report_directory, dt_self_test)
                 subprocess.check_output(cmd, shell=True)
 
+def get_attr(bundle_attributes, attr):
+    result = None
+    if utils.in_bundle_attributes(bundle_attributes, attr):
+        result = bundle_attributes[attr]
+    return result
+
 def test_report(config):
     results_directory = os.getcwd() + '/results'
     results = {}
@@ -695,46 +701,30 @@ def test_report(config):
                         bundle_attributes = bundle_data['test_runs'][-1]['attributes']
                 if utils.in_bundle_attributes(bundle_attributes, 'kernel.defconfig'):
                     print bundle_attributes['kernel.defconfig']
-                if utils.in_bundle_attributes(bundle_attributes, 'target'):
-                    board_instance = bundle_attributes['target']
+                board_instance = get_attr(bundle_attributes, 'target')
                 if utils.in_bundle_attributes(bundle_attributes, 'kernel.defconfig'):
                     kernel_defconfig = bundle_attributes['kernel.defconfig']
                     arch, kernel_defconfig_full = kernel_defconfig.split('-', 1)
                     kernel_defconfig_base = ''.join(kernel_defconfig_full.split('+')[:1])
                     if kernel_defconfig_full == kernel_defconfig_base:
                         kernel_defconfig_full = None
-                if utils.in_bundle_attributes(bundle_attributes, 'kernel.version'):
-                    kernel_version = bundle_attributes['kernel.version']
-                if utils.in_bundle_attributes(bundle_attributes, 'device.tree'):
-                    device_tree = bundle_attributes['device.tree']
-                if utils.in_bundle_attributes(bundle_attributes, 'kernel.endian'):
-                    kernel_endian = bundle_attributes['kernel.endian']
-                if utils.in_bundle_attributes(bundle_attributes, 'platform.fastboot'):
-                    fastboot = bundle_attributes['platform.fastboot']
-                if utils.in_bundle_attributes(bundle_attributes, 'kernel-boot-time'):
-                    kernel_boot_time = bundle_attributes['kernel-boot-time']
-                if utils.in_bundle_attributes(bundle_attributes, 'kernel.tree'):
-                    kernel_tree = bundle_attributes['kernel.tree']
-                if utils.in_bundle_attributes(bundle_attributes, 'kernel-image'):
-                    kernel_image = bundle_attributes['kernel-image']
-                if utils.in_bundle_attributes(bundle_attributes, 'kernel-addr'):
-                    kernel_addr = bundle_attributes['kernel-addr']
-                if utils.in_bundle_attributes(bundle_attributes, 'initrd-addr'):
-                    initrd_addr = bundle_attributes['initrd-addr']
-                if utils.in_bundle_attributes(bundle_attributes, 'dtb-addr'):
-                    dtb_addr = bundle_attributes['dtb-addr']
-                if utils.in_bundle_attributes(bundle_attributes, 'dtb-append'):
-                    dtb_append = bundle_attributes['dtb-append']
+                kernel_version = get_attr(bundle_attributes, 'kernel.version')
+                device_tree = get_attr(bundle_attributes, 'device.tree')
+                kernel_endian = get_attr(bundle_attributes, 'kernel.endian')
+                fastboot = get_attr(bundle_attributes, 'platform.fastboot')
+                kernel_boot_time = get_attr(bundle_attributes, 'kernel-boot-time')
+                kernel_tree = get_attr(bundle_attributes, 'kernel.tree')
+                kernel_image = get_attr(bundle_attributes, 'kernel-image')
+                kernel_addr = get_attr(bundle_attributes, 'kernel-addr')
+                initrd_addr = get_attr(bundle_attributes, 'initrd-addr')
+                dtb_addr = get_attr(bundle_attributes, 'dtb-addr')
+                dtb_append = get_attr(bundle_attributes, 'dtb-append')
                 if utils.in_bundle_attributes(bundle_attributes, 'boot_retries'):
                     boot_retries = int(bundle_attributes['boot_retries'])
-                if utils.in_bundle_attributes(bundle_attributes, 'test.plan'):
-                    test_plan = bundle_attributes['test.plan']
-                if utils.in_bundle_attributes(bundle_attributes, 'test.set'):
-                    test_set = bundle_attributes['test.set']
-                if utils.in_bundle_attributes(bundle_attributes, 'test.suite'):
-                    test_suite = bundle_attributes['test.suite']
-                if utils.in_bundle_attributes(bundle_attributes, 'test.type'):
-                    test_type = bundle_attributes['test.type']
+                test_plan = get_attr(bundle_attributes, 'test.plan')
+                test_set = get_attr(bundle_attributes, 'test.set')
+                test_suite = get_attr(bundle_attributes, 'test.suite')
+                test_type = get_attr(bundle_attributes, 'test.type')
 
             # Check if we found efi-rtc
             if test_plan == 'boot-kvm-uefi' and not efi_rtc:
