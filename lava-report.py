@@ -711,9 +711,8 @@ def test_report(config):
                     kernel_endian = bundle_attributes['kernel.endian']
                 if utils.in_bundle_attributes(bundle_attributes, 'platform.fastboot'):
                     fastboot = bundle_attributes['platform.fastboot']
-                if kernel_boot_time is None:
-                    if utils.in_bundle_attributes(bundle_attributes, 'kernel-boot-time'):
-                        kernel_boot_time = bundle_attributes['kernel-boot-time']
+                if utils.in_bundle_attributes(bundle_attributes, 'kernel-boot-time'):
+                    kernel_boot_time = bundle_attributes['kernel-boot-time']
                 if utils.in_bundle_attributes(bundle_attributes, 'kernel.tree'):
                     kernel_tree = bundle_attributes['kernel.tree']
                 if utils.in_bundle_attributes(bundle_attributes, 'kernel-image'):
