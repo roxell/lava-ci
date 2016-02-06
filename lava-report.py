@@ -285,33 +285,23 @@ def boot_report(config):
                     platform_name = 'fsl-ls2080a-simu'
                 elif test_plan == 'boot-kvm' or test_plan == 'boot-kvm-uefi':
                     if device_tree == 'sun7i-a20-cubietruck.dtb':
-                        if device_type == 'dynamic-vm':
-                            device_type = 'cubieboard3-kvm-guest'
-                        else:
-                            device_type = 'cubieboard3-kvm-host'
+                        device_type = 'cubieboard3-kvm'
                     elif device_tree == 'apm-mustang.dtb':
-                        if device_type == 'dynamic-vm':
-                            if test_plan == 'boot-kvm-uefi':
-                                device_type = 'mustang-kvm-uefi-guest'
-                            else:
-                                device_type = 'mustang-kvm-guest'
-                        else:
-                            if test_plan == 'boot-kvm-uefi':
-                                device_type = 'mustang-kvm-uefi-host'
-                            else:
-                                device_type = 'mustang-kvm-host'
+                        device_type = 'mustang-kvm'
                     elif device_tree == 'juno.dtb':
-                        if device_type == 'dynamic-vm':
-                            if test_plan == 'boot-kvm-uefi':
-                                device_type = 'juno-kvm-uefi-guest'
-                            else:
-                                device_type = 'juno-kvm-guest'
-                        else:
-                            if test_plan == 'boot-kvm-uefi':
-                                device_type = 'juno-kvm-uefi-host'
-                            else:
-                                device_type = 'juno-kvm-host'
+                        device_type = 'juno-kvm'
 
+                    new_device_type = None
+                    if test_plan.endswith('-uefi'):
+                        new_device_type += '-uefi'
+
+                    if device_type == 'dynamic-vm':
+                        new_device_type += "-guest"
+                    else:
+                        new_device_type += "-host"
+
+                    if new_device_type:
+                        device_type = new_device_type
                     platform_name = device_map[device_type][0]
 
                 elif test_plan == 'boot-nfs' or test_plan == 'boot-nfs-mp':
