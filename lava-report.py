@@ -287,36 +287,33 @@ def boot_report(config):
                     if device_tree == 'sun7i-a20-cubietruck.dtb':
                         if device_type == 'dynamic-vm':
                             device_type = 'cubieboard3-kvm-guest'
-                            platform_name = device_map[device_type][0]
                         else:
                             device_type = 'cubieboard3-kvm-host'
-                            platform_name = device_map[device_type][0]
                     elif device_tree == 'apm-mustang.dtb':
                         if device_type == 'dynamic-vm':
                             if test_plan == 'boot-kvm-uefi':
                                 device_type = 'mustang-kvm-uefi-guest'
                             else:
                                 device_type = 'mustang-kvm-guest'
-                            platform_name = device_map[device_type][0]
                         else:
                             if test_plan == 'boot-kvm-uefi':
                                 device_type = 'mustang-kvm-uefi-host'
                             else:
                                 device_type = 'mustang-kvm-host'
-                            platform_name = device_map[device_type][0]
                     elif device_tree == 'juno.dtb':
                         if device_type == 'dynamic-vm':
                             if test_plan == 'boot-kvm-uefi':
                                 device_type = 'juno-kvm-uefi-guest'
                             else:
                                 device_type = 'juno-kvm-guest'
-                            platform_name = device_map[device_type][0]
                         else:
                             if test_plan == 'boot-kvm-uefi':
                                 device_type = 'juno-kvm-uefi-host'
                             else:
                                 device_type = 'juno-kvm-host'
-                            platform_name = device_map[device_type][0]
+
+                    platform_name = device_map[device_type][0]
+
                 elif test_plan == 'boot-nfs' or test_plan == 'boot-nfs-mp':
                     platform_name = device_map[device_type][0] + '_rootfs:nfs'
                 else:
