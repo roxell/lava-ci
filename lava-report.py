@@ -605,13 +605,15 @@ def boot_report(config):
     # sendmail
     if config.get("email"):
         print 'Sending e-mail summary to %s' % config.get("email")
-        if os.path.exists(report_directory):
-            cmd = 'cat %s | sendmail -t' % os.path.join(report_directory, boot)
-            subprocess.check_output(cmd, shell=True)
+        send_mail(boot)
         if dt_tests:
-            if os.path.exists(report_directory):
-                cmd = 'cat %s | sendmail -t' % os.path.join(report_directory, dt_self_test)
-                subprocess.check_output(cmd, shell=True)
+            send_mail(dt_self_test)
+
+
+def send_mail(report_directory, filepath):
+    if os.path.exists(report_directory):
+        cmd = 'cat %s | sendmail -t' % os.path.join(report_directory, filepath)
+        subprocess.check_output(cmd, shell=True)
 
 def get_attr(bundle_attributes, attr):
     result = None
@@ -950,9 +952,7 @@ def test_report(config):
     # sendmail
     if config.get("email"):
         print 'Sending e-mail summary to %s' % config.get("email")
-        if os.path.exists(report_directory):
-            cmd = 'cat %s | sendmail -t' % os.path.join(report_directory, boot)
-            subprocess.check_output(cmd, shell=True)
+        send_mail(boot)
 
 def main(args):
     config = configuration.get_config(args)
