@@ -616,6 +616,7 @@ def boot_report(config):
 def test_report(config):
     results_directory = os.getcwd() + '/results'
     results = {}
+    bundle_attributes = dict()
     duration = 0.0
     utils.mkdir(results_directory)
     for test in config.get('test'):
@@ -698,7 +699,7 @@ def test_report(config):
                     board_instance = bundle_attributes['target']
                 if utils.in_bundle_attributes(bundle_attributes, 'kernel.defconfig'):
                     kernel_defconfig = bundle_attributes['kernel.defconfig']
-                    arch, kernel_defconfig_full = kernel_defconfig.split('-')
+                    arch, kernel_defconfig_full = kernel_defconfig.split('-', 1)
                     kernel_defconfig_base = ''.join(kernel_defconfig_full.split('+')[:1])
                     if kernel_defconfig_full == kernel_defconfig_base:
                         kernel_defconfig_full = None
