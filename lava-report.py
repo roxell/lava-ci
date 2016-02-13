@@ -177,10 +177,10 @@ def boot_report(config):
                 job_name = job_details['description']
             result = jobs[job_id]['result']
             bundle = jobs[job_id]['bundle']
-            if bundle is None and device_type == 'dynamic-vm':
+            if not bundle and device_type == 'dynamic-vm':
                 host_job_id = job_id.replace('.1', '.0')
                 bundle = jobs[host_job_id]['bundle']
-                if bundle is None:
+                if not bundle:
                     print '%s bundle is empty, skipping...' % device_type
                     continue
             # Retrieve the log file
@@ -231,7 +231,7 @@ def boot_report(config):
                     if device_type == 'dynamic-vm':
                         efi_rtc = True
             # Retrieve bundle
-            if bundle is not None:
+            if bundle:
                 json_bundle = connection.dashboard.get(bundle)
                 bundle_data = json.loads(json_bundle['content'])
                 # Get the boot data from LAVA
@@ -262,7 +262,7 @@ def boot_report(config):
                 device_tree = get_attr(bundle_attributes, 'device.tree')
                 kernel_endian = get_attr(bundle_attributes, 'kernel.endian')
                 fastboot = get_attr(bundle_attributes, 'platform.fastboot')
-                if kernel_boot_time is None:
+                if not kernel_boot_time:
                     kernel_boot_time = get_attr(bundle_attributes, 'kernel-boot-time')
                 kernel_tree = get_attr(bundle_attributes, 'kernel.tree')
                 kernel_addr = get_attr(bundle_attributes, 'kernel-addr')
@@ -281,7 +281,7 @@ def boot_report(config):
             # Record the boot log and result
             # TODO: Will need to map device_types to dashboard device types
             if kernel_defconfig and device_type and result:
-                if (arch == 'arm' or arch =='arm64') and device_tree is None:
+                if (arch == 'arm' or arch =='arm64') and not device_tree:
                     platform_name = device_map[device_type][0] + ',legacy'
                 else:
                     if device_tree == 'vexpress-v2p-ca15_a7.dtb':
@@ -322,7 +322,7 @@ def boot_report(config):
                     directory = os.path.join(results_directory, kernel_defconfig)
                 utils.ensure_dir(directory)
                 utils.write_file(job_file, log, directory)
-                if kernel_boot_time is None:
+                if not kernel_boot_time:
                     kernel_boot_time = '0.0'
                 if results.has_key(kernel_defconfig):
                     results[kernel_defconfig].append({'device_type': platform_name, 'dt_test_result': dt_test_result, 'dt_tests_passed': dt_tests_passed, 'dt_tests_failed': dt_tests_failed, 'kernel_boot_time': kernel_boot_time, 'result': result})
@@ -343,7 +343,7 @@ def boot_report(config):
                 boot_meta['version'] = '1.0'
                 boot_meta['arch'] = arch
                 boot_meta['defconfig'] = kernel_defconfig_base
-                if kernel_defconfig_full is not None:
+                if kernel_defconfig_full:
                     boot_meta['defconfig_full'] = kernel_defconfig_full
                 if device_map[device_type][1]:
                     boot_meta['mach'] = device_map[device_type][1]
@@ -658,7 +658,7 @@ def test_report(config):
             result = jobs[job_id]['result']
             bundle = jobs[job_id]['bundle']
             # Retrieve bundle
-            if bundle is not None:
+            if bundle:
                 json_bundle = connection.dashboard.get(bundle)
                 bundle_data = json.loads(json_bundle['content'])
                 # Get the boot data from LAVA
@@ -716,7 +716,7 @@ def test_report(config):
             # Record the boot log and result
             # TODO: Will need to map device_types to dashboard device types
             if kernel_defconfig and device_type and result:
-                if (arch == 'arm' or arch =='arm64') and device_tree is None:
+                if (arch == 'arm' or arch =='arm64') and not device_tree:
                     platform_name = device_map[device_type][0] + ',legacy'
                 else:
                     if device_tree == 'vexpress-v2p-ca15_a7.dtb':
@@ -772,7 +772,7 @@ def test_report(config):
                     test_meta['lab_name'] = None
                 test_meta['arch'] = arch
                 test_meta['defconfig'] = kernel_defconfig_base
-                if kernel_defconfig_full is not None:
+                if kernel_defconfig_full:
                     test_meta['defconfig_full'] = kernel_defconfig_full
                 #if device_map[device_type][1]:
                     #test_meta['mach'] = device_map[device_type][1]
@@ -789,7 +789,7 @@ def test_report(config):
                     query += '&job=%s' % test_meta['job']
                     query += '&limit=1'
                     query += '&defconfig=%s' % test_meta['defconfig']
-                    if kernel_defconfig_full is not None:
+                    if kernel_defconfig_full:
                         query += '&defconfig_full=%s' % test_meta['defconfig_full']
                     else:
                         query += '&defconfig_full=%s' % test_meta['defconfig']
