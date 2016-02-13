@@ -404,20 +404,22 @@ def boot_report(config):
                     print 'Uploading text version of boot log'
                     with open(os.path.join(directory, log)) as lh:
                         data = lh.read()
-                    api_url = urlparse.urljoin(config.get("api"), '/upload/%s/%s/%s/%s/%s' % (kernel_tree,
-                                                                                     kernel_version,
-                                                                                     kernel_defconfig,
-                                                                                     config.get("lab"),
-                                                                                     log))
+                    api_url = urlparse.urljoin(config.get("api"), '/upload/%s/%s/%s/%s/%s' % (
+                        kernel_tree,
+                        kernel_version,
+                        kernel_defconfig,
+                        config.get("lab"),
+                        log))
                     push('PUT', api_url, data=data, headers=headers)
                     print 'Uploading html version of boot log'
                     with open(os.path.join(directory, html)) as lh:
                         data = lh.read()
-                    api_url = urlparse.urljoin(config.get("api"), '/upload/%s/%s/%s/%s/%s' % (kernel_tree,
-                                                                                     kernel_version,
-                                                                                     kernel_defconfig,
-                                                                                     config.get("lab"),
-                                                                                     html))
+                    api_url = urlparse.urljoin(config.get("api"), '/upload/%s/%s/%s/%s/%s' % (
+                        kernel_tree,
+                        kernel_version,
+                        kernel_defconfig,
+                        config.get("lab"),
+                        html))
                     push('PUT', api_url, data=data, headers=headers)
 
     if results and kernel_tree and kernel_version:
@@ -440,14 +442,19 @@ def boot_report(config):
         with open(os.path.join(report_directory, boot), 'a') as f:
             f.write('To: %s\n' % config.get("email"))
             f.write('From: bot@kernelci.org\n')
-            f.write('Subject: %s boot: %s boots: %s passed, %s failed (%s)\n' % (kernel_tree,
-                                                                                str(total),
-                                                                                str(passed),
-                                                                                str(failed),
-                                                                                kernel_version))
+            f.write('Subject: %s boot: %s boots: %s passed, %s failed (%s)\n' % (
+                kernel_tree,
+                str(total),
+                str(passed),
+                str(failed),
+                kernel_version))
             f.write('\n')
-            f.write('Full Build Report: http://kernelci.org/build/%s/kernel/%s/\n' % (kernel_tree, kernel_version))
-            f.write('Full Boot Report: http://kernelci.org/boot/all/job/%s/kernel/%s/\n' % (kernel_tree, kernel_version))
+            f.write('Full Build Report: http://kernelci.org/build/%s/kernel/%s/\n' % (
+                kernel_tree,
+                kernel_version))
+            f.write('Full Boot Report: http://kernelci.org/boot/all/job/%s/kernel/%s/\n' % (
+                kernel_tree,
+                kernel_version))
             f.write('\n')
             f.write('Total Duration: %.2f minutes\n' % (duration / 60))
             f.write('Tree/Branch: %s\n' % kernel_tree)
@@ -466,9 +473,10 @@ def boot_report(config):
                         break
                 for result in results_list:
                     if result['result'] == 'OFFLINE':
-                        f.write('    %s   %ss   boot-test: %s\n' % (result['device_type'],
-                                                                    result['kernel_boot_time'],
-                                                                    result['result']))
+                        f.write('    %s   %ss   boot-test: %s\n' % (
+                            result['device_type'],
+                            result['kernel_boot_time'],
+                            result['result']))
                         f.write('\n')
             first = True
             for defconfig, results_list in results.items():
@@ -484,20 +492,23 @@ def boot_report(config):
                         break
                 for result in results_list:
                     if result['result'] == 'FAIL':
-                        f.write('    %s   %ss   boot-test: %s\n' % (result['device_type'],
-                                                                    result['kernel_boot_time'],
-                                                                    result['result']))
+                        f.write('    %s   %ss   boot-test: %s\n' % (
+                            result['device_type'],
+                            result['kernel_boot_time'],
+                            result['result']))
                         if config.get("lab"):
-                            f.write('    http://storage.kernelci.org/kernel-ci/%s/%s/%s/%s/boot-%s.html' % (kernel_tree,
-                                                                                                            kernel_version,
-                                                                                                            defconfig,
-                                                                                                            config.get("lab"),
-                                                                                                            result['device_type']))
+                            f.write('    http://storage.kernelci.org/kernel-ci/%s/%s/%s/%s/boot-%s.html' % (
+                                kernel_tree,
+                                kernel_version,
+                                defconfig,
+                                config.get("lab"),
+                                result['device_type']))
                         else:
-                            f.write('    http://storage.kernelci.org/kernel-ci/%s/%s/%s/boot-%s.html' % (kernel_tree,
-                                                                                                         kernel_version,
-                                                                                                         defconfig,
-                                                                                                         result['device_type']))
+                            f.write('    http://storage.kernelci.org/kernel-ci/%s/%s/%s/boot-%s.html' % (
+                                kernel_tree,
+                                kernel_version,
+                                defconfig,
+                                result['device_type']))
                         f.write('\n')
             f.write('\n')
             f.write('Full Boot Report:\n')
@@ -506,7 +517,10 @@ def boot_report(config):
                 f.write(defconfig)
                 f.write('\n')
                 for result in results_list:
-                    f.write('    %s   %ss   boot-test: %s\n' % (result['device_type'], result['kernel_boot_time'], result['result']))
+                    f.write('    %s   %ss   boot-test: %s\n' % (
+                        result['device_type'],
+                        result['kernel_boot_time'],
+                        result['result']))
 
     # dt-self-test
     if results and kernel_tree and kernel_version and dt_tests:
@@ -524,15 +538,22 @@ def boot_report(config):
         with open(os.path.join(report_directory, dt_self_test), 'a') as f:
             f.write('To: %s\n' % config.get("email"))
             f.write('From: bot@kernelci.org\n')
-            f.write('Subject: %s dt-runtime-unit-tests: %s boards tested: %s passed, %s failed (%s)\n' % (kernel_tree,
-                                                                                                           str(total),
-                                                                                                           str(passed),
-                                                                                                           str(failed),
-                                                                                                           kernel_version))
+            f.write('Subject: %s dt-runtime-unit-tests: %s boards tested: %s passed, %s failed (%s)\n' % (
+                kernel_tree,
+                str(total),
+                str(passed),
+                str(failed),
+                kernel_version))
             f.write('\n')
-            f.write('Full Build Report: http://kernelci.org/build/%s/kernel/%s/\n' % (kernel_tree, kernel_version))
-            f.write('Full Boot Report: http://kernelci.org/boot/all/job/%s/kernel/%s/\n' % (kernel_tree, kernel_version))
-            f.write('Full Test Report: http://kernelci.org/test/%s/kernel/%s/\n' % (kernel_tree, kernel_version))
+            f.write('Full Build Report: http://kernelci.org/build/%s/kernel/%s/\n' % (
+                kernel_tree,
+                kernel_version))
+            f.write('Full Boot Report: http://kernelci.org/boot/all/job/%s/kernel/%s/\n' % (
+                kernel_tree,
+                kernel_version))
+            f.write('Full Test Report: http://kernelci.org/test/%s/kernel/%s/\n' % (
+                kernel_tree,
+                kernel_version))
             f.write('\n')
             f.write('Tree/Branch: %s\n' % kernel_tree)
             f.write('Git Describe: %s\n' % kernel_version)
@@ -550,21 +571,24 @@ def boot_report(config):
                         break
                 for result in results_list:
                     if result['dt_test_result'] == "FAIL":
-                        f.write('    %s   passed: %s / failed: %s   dt-runtime-unit-tests: %s\n' % (result['device_type'],
-                                                                                                    result['dt_tests_passed'],
-                                                                                                    result['dt_tests_failed'],
-                                                                                                    result['dt_test_result']))
+                        f.write('    %s   passed: %s / failed: %s   dt-runtime-unit-tests: %s\n' % (
+                            result['device_type'],
+                            result['dt_tests_passed'],
+                            result['dt_tests_failed'],
+                            result['dt_test_result']))
                         if config.get("lab"):
-                            f.write('    http://storage.kernelci.org/kernel-ci/%s/%s/%s/%s/boot-%s.html' % (kernel_tree,
-                                                                                                        kernel_version,
-                                                                                                        defconfig,
-                                                                                                        config.get("lab"),
-                                                                                                        result['device_type']))
+                            f.write('    http://storage.kernelci.org/kernel-ci/%s/%s/%s/%s/boot-%s.html' % (
+                                kernel_tree,
+                                kernel_version,
+                                defconfig,
+                                config.get("lab"),
+                                result['device_type']))
                         else:
-                            f.write('    http://storage.kernelci.org/kernel-ci/%s/%s/%s/boot-%s.html' % (kernel_tree,
-                                                                                                         kernel_version,
-                                                                                                         defconfig,
-                                                                                                         result['device_type']))
+                            f.write('    http://storage.kernelci.org/kernel-ci/%s/%s/%s/boot-%s.html' % (
+                                kernel_tree,
+                                kernel_version,
+                                defconfig,
+                                result['device_type']))
             f.write('\n')
             f.write('\n')
             f.write('Full Unit Test Report:\n')
@@ -577,10 +601,11 @@ def boot_report(config):
                             f.write(defconfig)
                             f.write('\n')
                             first = False
-                        f.write('    %s   passed: %s / failed: %s   dt-runtime-unit-tests: %s\n' % (result['device_type'],
-                                                                                                    result['dt_tests_passed'],
-                                                                                                    result['dt_tests_failed'],
-                                                                                                    result['dt_test_result']))
+                        f.write('    %s   passed: %s / failed: %s   dt-runtime-unit-tests: %s\n' % (
+                            result['device_type'],
+                            result['dt_tests_passed'],
+                            result['dt_tests_failed'],
+                            result['dt_test_result']))
 
     # sendmail
     if config.get("email"):
@@ -852,16 +877,23 @@ def test_report(config):
         with open(os.path.join(report_directory, boot), 'a') as f:
             f.write('To: %s\n' % config.get("email"))
             f.write('From: bot@kernelci.org\n')
-            f.write('Subject: %s %s: %s total, %s passed, %s failed (%s)\n' % (kernel_tree,
-                                                                               test_plan,
-                                                                               str(total),
-                                                                               str(passed),
-                                                                               str(failed),
-                                                                               kernel_version))
+            f.write('Subject: %s %s: %s total, %s passed, %s failed (%s)\n' % (
+                kernel_tree,
+                test_plan,
+                str(total),
+                str(passed),
+                str(failed),
+                kernel_version))
             f.write('\n')
-            f.write('Full Build Report: http://kernelci.org/build/%s/kernel/%s/\n' % (kernel_tree, kernel_version))
-            f.write('Full Boot Report: http://kernelci.org/boot/all/job/%s/kernel/%s/\n' % (kernel_tree, kernel_version))
-            f.write('Full Test Report: http://kernelci.org/test/%s/kernel/%s/\n' % (kernel_tree, kernel_version))
+            f.write('Full Build Report: http://kernelci.org/build/%s/kernel/%s/\n' % (
+                kernel_tree,
+                kernel_version))
+            f.write('Full Boot Report: http://kernelci.org/boot/all/job/%s/kernel/%s/\n' % (
+                kernel_tree,
+                kernel_version))
+            f.write('Full Test Report: http://kernelci.org/test/%s/kernel/%s/\n' % (
+                kernel_tree,
+                kernel_version))
             f.write('\n')
             f.write('Total Duration: %.2f minutes\n' % (duration / 60.0))
             f.write('Tree/Branch: %s\n' % kernel_tree)
@@ -880,9 +912,10 @@ def test_report(config):
                         break
                 for result in results_list:
                     if result['result'] == 'OFFLINE':
-                        f.write('    %s   %s: %s\n' % (result['device_type'],
-                                                       result['test_plan'],
-                                                       result['result']))
+                        f.write('    %s   %s: %s\n' % (
+                            result['device_type'],
+                            result['test_plan'],
+                            result['result']))
                         f.write('\n')
             first = True
             for defconfig, results_list in results.items():
@@ -898,22 +931,25 @@ def test_report(config):
                         break
                 for result in results_list:
                     if result['result'] == 'FAIL':
-                        f.write('    %s   %s: %s\n' % (result['device_type'],
-                                                       result['test_plan'],
-                                                       result['result']))
+                        f.write('    %s   %s: %s\n' % (
+                            result['device_type'],
+                            result['test_plan'],
+                            result['result']))
                         if config.get("lab"):
-                            f.write('    http://storage.kernelci.org/kernel-ci/%s/%s/%s/%s/%s-%s.html' % (kernel_tree,
-                                                                                                          kernel_version,
-                                                                                                          defconfig,
-                                                                                                          config.get("lab"),
-                                                                                                          result['test_plan'],
-                                                                                                          result['device_type']))
+                            f.write('    http://storage.kernelci.org/kernel-ci/%s/%s/%s/%s/%s-%s.html' % (
+                                kernel_tree,
+                                kernel_version,
+                                defconfig,
+                                config.get("lab"),
+                                result['test_plan'],
+                                result['device_type']))
                         else:
-                            f.write('    http://storage.kernelci.org/kernel-ci/%s/%s/%s/%s-%s.html' % (kernel_tree,
-                                                                                                       kernel_version,
-                                                                                                       defconfig,
-                                                                                                       result['test_plan'],
-                                                                                                       result['device_type']))
+                            f.write('    http://storage.kernelci.org/kernel-ci/%s/%s/%s/%s-%s.html' % (
+                                kernel_tree,
+                                kernel_version,
+                                defconfig,
+                                result['test_plan'],
+                                result['device_type']))
                         f.write('\n')
             f.write('\n')
             f.write('Full Test Report:\n')
@@ -922,12 +958,20 @@ def test_report(config):
                 f.write(defconfig)
                 f.write('\n')
                 for result in results_list:
-                    f.write('    %s   %s: %s\n' % (result['device_type'], result['test_plan'], result['result']))
+                    f.write('    %s   %s: %s\n' % (
+                        result['device_type'],
+                        result['test_plan'],
+                        result['result']))
                     for test_case in result['test_cases']:
                         if 'measurement' in test_case:
-                            f.write('         %s: %s %s\n' % (test_case['name'], test_case['measurement'], test_case['units']))
+                            f.write('         %s: %s %s\n' % (
+                                test_case['name'],
+                                test_case['measurement'],
+                                test_case['units']))
                         else:
-                            f.write('         %s: %s\n' % (test_case['name'], test_case['status']))
+                            f.write('         %s: %s\n' % (
+                                test_case['name'],
+                                test_case['status']))
                     f.write('\n')
     # sendmail
     if config.get("email"):
